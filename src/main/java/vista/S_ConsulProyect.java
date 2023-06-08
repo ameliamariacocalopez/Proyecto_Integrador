@@ -10,29 +10,31 @@ import control.ConsulBtnListener;
 import modelo.ProyectoIntegrador;
 
 /**
- * @author Paula Moure
  * Ventana para consultar proyectos
  */
 public class S_ConsulProyect extends JFrame{
 	ImageIcon pacImg = new ImageIcon("img/pacTrans.png");
 	JLabel imgLbl = new JLabel(pacImg);	
 	private JLabel delTxt;
-    private JLabel filterTxt;
-    private JTextField filterTxtF;
+    
     private JList<String> projectList;
     private ArrayList<ProyectoIntegrador> listaProyectos;
-    private DefaultListModel<String> listaProy;    
+    private DefaultListModel<String> listaNombresProy;    
     private JButton consBtn;
 	
-	public S_ConsulProyect() {
+	/**
+	 * Constructor de la clase ConsulBtnListener.
+	 * @param projectList el componente JList que contiene los proyectos.
+	 */
+	public S_ConsulProyect(ArrayList<ProyectoIntegrador> listaProyectos) {
 		super("Consultar Proyecto - ESTUDIANTES");
-		listaProyectos = new ArrayList<ProyectoIntegrador>();
+        this.listaProyectos = listaProyectos;
 		getContentPane().setBackground(new Color(195, 219, 255));
 		inicializarComponentes();
 	}
 	
 	/**
-	 * Inicializa los componentes y los añade al content pane
+	 * Inicializa los componentes y los aÃ±ade al content pane
 	 */
 	public void inicializarComponentes() {
 		getContentPane().setLayout(null);
@@ -47,13 +49,19 @@ public class S_ConsulProyect extends JFrame{
         delTxt.setBounds(33, 145, 413, 20);
 	    getContentPane().add(delTxt);
 
-        filterTxt = new JLabel("Filter:");
-        filterTxt.setBounds(43, 173, 63, 20);
-	    getContentPane().add(filterTxt);
+	            
+	    //lista
+        listaNombresProy = new DefaultListModel<String>();
+
+        projectList = new JList<String>(listaNombresProy);
+        projectList.setLocation(43, 205);
+        projectList.setSize(563, 171);
+	    Border buttonBorder = BorderFactory.createLineBorder(Color.BLACK);
 	    
-	    filterTxtF = new JTextField();
-	    filterTxtF.setBounds(85, 174, 117, 20);
-	    getContentPane().add(filterTxtF);
+	    JScrollPane scrollPane = new JScrollPane(projectList);
+	    scrollPane.setBounds(43, 205, 563, 171);
+	    getContentPane().add(scrollPane);
+		
 	    
 	    consBtn = new JButton("Consultar");
 	    consBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -63,50 +71,37 @@ public class S_ConsulProyect extends JFrame{
 	    ConsulBtnListener escuchador = new ConsulBtnListener(projectList);
 	    consBtn.addActionListener(escuchador);
 	    getContentPane().add(consBtn);
-	            
-	    //lista
-	    DefaultListModel<String> listaProy = new DefaultListModel<>();
-        projectList = new JList<>(listaProy);
-        getContentPane().add(consBtn);
-        projectList.setLocation(43, 205);
-        projectList.setSize(563, 171);
-	    Border buttonBorder = BorderFactory.createLineBorder(Color.BLACK);
 	    
-	    JScrollPane scrollPane = new JScrollPane(projectList);
-	    scrollPane.setBounds(43, 205, 563, 171);
-	    getContentPane().add(scrollPane);
-		
-		setSize(650, 470);
+		setSize(677, 485);
 		setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	/**
-	 * Recorre todos los proyectos y los añade a la lista
+	 * Recorre todos los proyectos y los aÃ±ade a la lista
 	 * @param lista
 	 */
 	public void showProys(ArrayList<ProyectoIntegrador> lista) {
 		for(ProyectoIntegrador p : lista) {
-			listaProy.addElement(p.toString());
+			listaNombresProy.addElement(p.toString());
 	    }
 	}
 	
-	/**
-	 * Hace toda la página visible
-	 */
-	public void hacerVisible() {
-		setVisible(true);
-	}
+    /**
+     * Hace toda la pÃ¡gina visible
+     */
+    public void hacerVisible() {
+        setVisible(true);
+    }
+    
+    /**
+     * Hides window
+     */
+    public void desactivar() {
+        setVisible(false);
+    }
 
-	/**
-	 * Recoge todos los proyectos creados
-	 * @return projectList - lista de todos los proyectos
-	 */
-	public JList<String> getProjectList() {
-		return projectList;
-	}
-
-//	public void setProjectList(JList<String> projectList) {
-//		this.projectList = projectList;
-//	}
+    public void setListaProyectos(ArrayList<ProyectoIntegrador> p) {
+    	listaProyectos = p;
+    }
 }

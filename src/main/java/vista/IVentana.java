@@ -2,12 +2,15 @@ package vista;
 
 import java.awt.Graphics;
 
-import control.ControladorProyecto;
-
 public interface IVentana {
-	//para que otra persona modifique nuestro código necesitan la interfaz para saber que métodos son obligatorios
-	
+	//para que otra persona modifique nuestro cÃ³digo necesitan la interfaz para saber que mÃ©todos son obligatorios
+	/**
+	 * Inicializa los componentes de la ventana.
+	 */
 	public void inicializarComponentes();
 	
+	/**
+	 * Hace la ventana visible.
+	 */
 	public void hacerVisible();
 }

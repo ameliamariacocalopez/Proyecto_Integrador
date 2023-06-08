@@ -2,109 +2,115 @@ package vista;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
+import control.AddStdntBtnListener;
 import control.ConsulBtnListener;
 import control.MenuListener;
+import modelo.Alumno;
 import modelo.ProyectoIntegrador;
 import control.EditStdntBtnListener;
 
+/**
+ * Clase que representa la interfaz grÃ¡fica de la aplicaciÃ³n de gestiÃ³n de
+ * alumnos.
+ */
 public class AlumnProyect extends JFrame {
 	ImageIcon pacImg = new ImageIcon("img/pacTrans.png");
-	JLabel imgLbl = new JLabel(pacImg);	
-	JMenuBar menu;
+	JLabel imgLbl = new JLabel(pacImg);
+	private JMenuBar menu;
 	JMenuItem consulItem;
 	JMenuItem addItem;
 	JMenuItem delItem;
 	JMenuItem modItem;
 	JMenuItem areasM;
 	JMenuItem alumnosM;
-	JButton addAlumn;
-	JButton editAlumn;
-    private JList<String> alumnList;
-    private ArrayList<ProyectoIntegrador> listaAlumnos;
-    private DefaultListModel<String> listaAlumn;
-    
+
+	private JList<String> alumnList;
+	private ArrayList<Alumno> listaAlumnos;
+	private DefaultListModel<String> listaAlumn;
+	private JButton editAlumn;
+
+	/**
+	 * Constructor de la clase AlumnProyect.
+	 */
 	public AlumnProyect() {
 		super("Alumnos");
 		getContentPane().setBackground(new Color(195, 219, 255));
 		inicializarComponentes();
 	}
-	
+
+	/**
+	 * Inicializa los componentes de la interfaz grÃ¡fica.
+	 */
 	public void inicializarComponentes() {
 		getContentPane().setLayout(null);
-		//Diseño: Añadir una cajita con el total de estudiantes, otra con los estudiantes asignados a un proyecto y otra los que no tienen ninguno asignado
-		
-		//objetos
-        imgLbl.setSize(304, 118);
-     	imgLbl.setLocation(150, 30);
-     	getContentPane().add(imgLbl);
-     	
-     	addAlumn = new JButton("Añadir alumno");
-     	addAlumn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-     	addAlumn.setBackground(new Color(58, 142, 247));
-     	addAlumn.setBounds(198, 389, 113, 20);
-	    addAlumn.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-	    addAlumn.addActionListener(new EditStdntBtnListener());
-	    EditStdntBtnListener escuchador = new EditStdntBtnListener();
-	    addAlumn.addActionListener(escuchador);
-	    getContentPane().add(addAlumn);
-	    
-	    editAlumn = new JButton("Editar");
-	    editAlumn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-	    addAlumn.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-	    editAlumn.setSize(107, 29);
-     	editAlumn.setBounds(323, 389, 87, 20);
-	    editAlumn.addActionListener(new EditStdntBtnListener());
-	    EditStdntBtnListener escuchador2 = new EditStdntBtnListener();
-	    editAlumn.addActionListener(escuchador2);
-	    getContentPane().add(editAlumn);
+		alumnosM = new JMenuItem("Alumnos");
 
-	    //menu
-  		menu = new JMenuBar();
-        areasM = new JMenuItem("Áreas");
-        alumnosM = new JMenuItem("Alumnos");
-        JMenu proyectoM = new JMenu("Proyecto Integrador");
+		// objetos
+		imgLbl.setSize(304, 118);
+		imgLbl.setLocation(150, 30);
+		getContentPane().add(imgLbl);
 
-        consulItem = new JMenuItem("Consultas");
-        addItem = new JMenuItem("Añadir Proyecto");
-        delItem = new JMenuItem("Borrar Proyecto");
-        modItem = new JMenuItem("Modificar Proyecto");
-          
-        proyectoM.add(consulItem);
-        proyectoM.add(addItem);
-        proyectoM.add(delItem);
-        proyectoM.add(modItem);
-        menu.add(proyectoM);
-        menu.add(areasM);
-        menu.add(alumnosM);
-        setJMenuBar(menu);
-        Border border = BorderFactory.createLineBorder(Color.BLACK);
-        
-	    
-	    //lista
-	    DefaultListModel<String> listaAlumn = new DefaultListModel<>();
-	    alumnList = new JList<>(listaAlumn);
-	    getContentPane().add(addAlumn);
-	    alumnList.setLocation(43, 205);
-	    alumnList.setSize(563, 260);
-	    Border buttonBorder = BorderFactory.createLineBorder(Color.BLACK);
-        listaAlumn = new DefaultListModel();
+		// menu
+		menu = new JMenuBar();
+		areasM = new JMenuItem("Areas");
+		alumnosM = new JMenuItem("Alumnos");
+		JMenu proyectoM = new JMenu("Proyecto Integrador");
+		consulItem = new JMenuItem("Consultas");
+		addItem = new JMenuItem("Anadir Proyecto");
+		delItem = new JMenuItem("Borrar Proyecto");
+		modItem = new JMenuItem("Modificar Proyecto");
+		proyectoM.add(consulItem);
+		proyectoM.add(addItem);
+		proyectoM.add(delItem);
+		proyectoM.add(modItem);
+		menu.add(proyectoM);
+		menu.add(areasM);
+		menu.add(alumnosM);
+		setJMenuBar(menu);
+		Border border = BorderFactory.createLineBorder(Color.BLACK);
+		listaAlumn = new DefaultListModel();
 
-	    
-	    JScrollPane scrollPane = new JScrollPane(alumnList);
-	    scrollPane.setBounds(40, 144, 563, 232);
-	    getContentPane().add(scrollPane);
-	    
-	    setSize(650, 484);
+		// menu listener
+		MenuListener menuList = new MenuListener(this);
+		setListener(menuList);
+
+		// lista
+		alumnList = new JList<>(listaAlumn);
+		alumnList.setLocation(43, 205);
+		alumnList.setSize(563, 260);
+		Border buttonBorder = BorderFactory.createLineBorder(Color.BLACK);
+
+		JScrollPane scrollPane = new JScrollPane(alumnList);
+		scrollPane.setBounds(40, 144, 563, 232);
+		getContentPane().add(scrollPane);
+
+		editAlumn = new JButton("Editar");
+		editAlumn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		editAlumn.setSize(107, 29);
+		editAlumn.setBounds(284, 386, 87, 20);
+		AddStdntBtnListener escuchador = new AddStdntBtnListener(this);
+		editAlumn.addActionListener(escuchador);
+		getContentPane().add(editAlumn);
+
+		setSize(677, 485);
 		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	
+
+	/**
+	 * Establece el listener para los elementos del menÃº.
+	 * @param listener El objeto MenuListener que manejarÃ¡ los eventos del menÃº.
+	 */
 	public void setListener(MenuListener listener) {
 		consulItem.addActionListener(listener);
 		addItem.addActionListener(listener);
@@ -114,10 +120,31 @@ public class AlumnProyect extends JFrame {
 		alumnosM.addActionListener(listener);
 	}
 
+	public void cargarAlumnos(ArrayList<Alumno> lista) {
+		// Obtener la lista de alumnos desde la base de datos utilizando AccesoBBDD
+		// Agregar los nombres de los alumnos a la lista de la JList
+		for (Alumno a : lista) {
+			listaAlumn.addElement(a.toString());
+		}
+		alumnList.setModel(listaAlumn); // Establecer el modelo de la JList con la lista de nombres de los alumnos
+	}
+	
 	/**
-	 * Hace toda la página visible
+	 * Hace toda la pÃ¡gina visible
 	 */
 	public void hacerVisible() {
 		setVisible(true);
+	}
+
+	/**
+	 * Hace toda la pÃ¡gina visible
+	 */
+	public void desactivar() {
+		setVisible(false);
+	}
+
+	public String getAlumno() {
+		String matricula = alumnList.getSelectedValue();
+		return matricula.substring(0, matricula.indexOf('-')).trim();
 	}
 }

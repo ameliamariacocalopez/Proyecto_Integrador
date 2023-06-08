@@ -5,10 +5,12 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.*;
-import control.MenuListener;
-import control.modBtnListener;
+import control.*;
 import modelo.ProyectoIntegrador;
 
+/**
+ * Ventana para modificar proyectos
+ */
 public class ModProyect extends JFrame {
 	ImageIcon pacImg = new ImageIcon("img/pacTrans.png");
 	JLabel imgLbl = new JLabel(pacImg);
@@ -19,34 +21,22 @@ public class ModProyect extends JFrame {
 	JMenuItem modItem;
 	JMenuItem areasM;
 	JMenuItem alumnosM;
-	JLabel headingTxt;
-	
-	private JTextField idTxtF;
-	private JTextField nombreProyTxtF;
-	private JTextField urlTxtF;
-	private JTextField notaTxtF;
-	private JTextField fechaTxtF;
-	private JTextField cursoTxtF;
-	private JTextField grupoTxtF;
+	private JLabel headingTxt;
 
-    private JList<String> projectList;
-    private ArrayList<ProyectoIntegrador> listaProyectos;
-    private DefaultListModel<String> listaProy;
-	
-    private JLabel filterTxt;
-    private JTextField filterTxtF;
     private JList<String> modProjList;
+    private ArrayList<ProyectoIntegrador> listaProyectos;
+    private DefaultListModel<String> listaNombresProy;
     private JButton modBtn2;
-
     
-	public ModProyect() {
+	public ModProyect(ArrayList<ProyectoIntegrador> listaProyectos) {
 		super("Modificar Proyecto");
+        this.listaProyectos = listaProyectos;
 		getContentPane().setBackground(new Color(195, 219, 255));
 		inicializarComponentes();
 	}
 	
 	/**
-	 * Inicializa los componentes y los añade al content pane
+	 * Inicializa los componentes y los aÃ±ade al content pane
 	 */
 	public void inicializarComponentes() {
 		getContentPane().setLayout(null);
@@ -60,32 +50,24 @@ public class ModProyect extends JFrame {
      	headingTxt.setFont(new Font("Lucida Grande", Font.PLAIN, 19));
      	headingTxt.setBounds(33, 145, 519, 20);
 	    getContentPane().add(headingTxt);
-
-        filterTxt = new JLabel("Filter:");
-        filterTxt.setBounds(43, 173, 63, 20);
-	    getContentPane().add(filterTxt);
 	    
-	    filterTxtF = new JTextField();
-	    filterTxtF.setBounds(85, 174, 117, 20);
-	    getContentPane().add(filterTxtF);
-	    
-	    modBtn2 = new JButton("Editar");
-	    modBtn2.setCursor(new Cursor(Cursor.HAND_CURSOR));
-	    modBtn2.setBackground(new Color(58, 142, 247));
-	    modBtn2.setBounds(239, 396, 63, 20);
-	    modBtn2.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-	    modBtnListener escuchador = new modBtnListener();
-	    modBtn2.addActionListener(escuchador);
 
-	    getContentPane().add(modBtn2);
+	    
+		//lista
+	    listaNombresProy = new DefaultListModel<String>();
+	    
+	    modProjList = new JList<String>(listaNombresProy);
+        modProjList.setLocation(43, 205);
+        modProjList.setSize(563, 171);
+	    Border buttonBorder = BorderFactory.createLineBorder(Color.BLACK);
 	    
 	    //menu
 		menu = new JMenuBar();
-        areasM = new JMenuItem("Áreas");
+        areasM = new JMenuItem("Areas");
         alumnosM = new JMenuItem("Alumnos");
         JMenu proyectoM = new JMenu("Proyecto Integrador");
         consulItem = new JMenuItem("Consultas");
-        addItem = new JMenuItem("Añadir Proyecto");
+        addItem = new JMenuItem("Anadir Proyecto");
         delItem = new JMenuItem("Borrar Proyecto");
         modItem = new JMenuItem("Modificar Proyecto");
         proyectoM.add(consulItem);
@@ -97,24 +79,35 @@ public class ModProyect extends JFrame {
         menu.add(alumnosM);
         setJMenuBar(menu);
         Border border = BorderFactory.createLineBorder(Color.BLACK);
-		listaProy = new DefaultListModel();
 		
-		//lista
-	    DefaultListModel<String> listaProy = new DefaultListModel<>();
-        projectList = new JList<>(listaProy);
-        getContentPane().add(modBtn2);
-        modProjList.setLocation(43, 205);
-        modProjList.setSize(563, 171);
-	    Border buttonBorder = BorderFactory.createLineBorder(Color.BLACK);
-	    
+        //menu listener
+        MenuListener menuList = new MenuListener(this);
+        setListener(menuList);
+		
 	    JScrollPane scrollPane = new JScrollPane(modProjList);
 	    scrollPane.setBounds(43, 205, 563, 171);
 	    getContentPane().add(scrollPane);
 		
-		setSize(650, 470);
+	    
+	    modBtn2 = new JButton("Editar");
+	    modBtn2.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	    modBtn2.setBackground(new Color(58, 142, 247));
+	    modBtn2.setBounds(239, 396, 63, 20);
+	    modBtn2.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+	    modBtnListener escuchador = new modBtnListener(modProjList);
+	    modBtn2.addActionListener(escuchador);
+	    getContentPane().add(modBtn2);
+	    
+	    
+		setSize(677, 485);
 		setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
+	/**
+	 * Configura los listeners para los elementos del menÃº.
+	 * @param listener El objeto que escucha los eventos del menÃº.
+	 */
 	public void setListener(MenuListener listener) {
 		consulItem.addActionListener(listener);
 		addItem.addActionListener(listener);
@@ -124,20 +117,30 @@ public class ModProyect extends JFrame {
 		alumnosM.addActionListener(listener);
 	}
 	
+	/**
+	 * Muestra los proyectos en la lista.
+	 * @param lista La lista de proyectos a mostrar.
+	 */
 	public void showProys(ArrayList<ProyectoIntegrador> lista) {
 		for(ProyectoIntegrador p : lista) {
-			listaProy.addElement(p.toString());
+			listaNombresProy.addElement(p.toString());
 	    }
 	}
 	
 	/**
-	 * Hace toda la página visible
+	 * Hace toda la pÃ¡gina visible
 	 */
 	public void hacerVisible() {
 		setVisible(true);
 	}
 	
+	/**
+     * Hides window
+     */
 	public void desactivar() {
 		setVisible(false);
 	}
+	 public void setListaProyectos(ArrayList<ProyectoIntegrador> p) {
+	    	listaProyectos = p;
+	    }	 
 }

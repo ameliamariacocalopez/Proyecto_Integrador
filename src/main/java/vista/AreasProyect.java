@@ -12,6 +12,9 @@ import javax.swing.border.*;
 
 import control.MenuListener;
 
+/**
+ * Clase que representa la interfaz grÃ¡fica de las Ã¡reas del proyecto.
+ */
 public class AreasProyect extends JFrame {
 	ImageIcon pacImg = new ImageIcon("img/pacTrans.png");
 	JLabel imgLbl = new JLabel(pacImg);
@@ -31,14 +34,17 @@ public class AreasProyect extends JFrame {
     private JLabel asirLbl;
     private JLabel asirText;
 	
+    /**
+     * Constructor de la clase AreasProyect.
+     */
 	public AreasProyect() {
-		super("Áreas");
+		super("Areas");
 		getContentPane().setBackground(new Color(195, 219, 255));
 		inicializarComponentes();
 	}
 	
 	/**
-	 * Inicializa los componentes y los añade al content pane
+	 * Inicializa los componentes y los aÃ±ade al content pane
 	 */
 	public void inicializarComponentes() {
 		getContentPane().setLayout(null);
@@ -52,8 +58,8 @@ public class AreasProyect extends JFrame {
      	dawLbl.setBounds(70, 148, 63, 20);
 	    getContentPane().add(dawLbl);
 	    
-	    //he usado html para poder ajustar el texto al tamaño del JLabel
-	    dawText = new JLabel("<html><body style='width: 118px;'>El grado de DAW (Diseño y Desarrollo de Aplicaciones Web) se centra en el estudio del diseño y desarrollo de aplicaciones web. Los estudiantes adquieren habilidades en lenguajes de programación web, bases de datos y diseño de interfaces. Aprenden a construir aplicaciones web interactivas utilizando tecnologías como HTML, CSS, JavaScript y frameworks populares. Además, se enfoca en la experiencia del usuario y la creación de interfaces intuitivas y atractivas.</body></html>");
+	    //he usado html para poder ajustar el texto al tamaÃ±o del JLabel
+	    dawText = new JLabel("<html><body style='width: 118px;'>Los estudiantes de Diseño y Desarrollo de Aplicaciones Web aprenden lenguajes de programacion web, bases de datos y diseno de interfaces. Se enfoca en la experiencia del usuario y la creacion de interfaces intuitivas y atractivas.</body></html>");
 	    dawText.setVerticalAlignment(SwingConstants.TOP);
 	    dawText.setBounds(70, 190, 147, 200);
 	    getContentPane().add(dawText);
@@ -62,7 +68,7 @@ public class AreasProyect extends JFrame {
 	    damLbl.setBounds(262, 148, 63, 20);
 	    getContentPane().add(damLbl);
 	    
-	    damText = new JLabel("<html><body style='width: 118px;'>El grado de DAM (Desarrollo de Aplicaciones Multiplataforma) se enfoca en el estudio y desarrollo de aplicaciones para diferentes plataformas y dispositivos. Durante el grado, los estudiantes adquieren conocimientos en lenguajes de programación como Java, C#, Swift y frameworks populares como Xamarin y Flutter. Aprenden a desarrollar aplicaciones tanto nativas como multiplataforma. Además, se exploran conceptos de diseño de interfaces, interacción de usuario y adaptación a diferentes tamaños de pantalla.</body></html>");
+	    damText = new JLabel("<html><body style='width: 118px;'>Los estudiantes de Desarrollo de Aplicaciones Multiplataforma se enfocan en el estudio y desarrollo de aplicaciones para diferentes plataformas y dispositivos. Estudian lenguajes como Java, C#, Swift.</body></html>");
 	    damText.setVerticalAlignment(SwingConstants.TOP);
 	    damText.setPreferredSize(new Dimension(147, 200));
 	    damText.setBounds(262, 190, 147, 200);
@@ -72,7 +78,7 @@ public class AreasProyect extends JFrame {
 	    asirLbl.setBounds(450, 148, 63, 20);
 	    getContentPane().add(asirLbl);
 	    
-	    asirText = new JLabel("<html><body style='width: 118px;'>El grado de ASIR (Administración de Sistemas Informáticos en Red) se centra en la administración y gestión de sistemas informáticos en entornos de red. Durante el grado, los estudiantes adquieren conocimientos en áreas como sistemas operativos, redes de computadoras, seguridad informática y servicios de infraestructura. Aprenden a configurar y mantener sistemas operativos, administrar redes locales y remotas, implementar medidas de seguridad y gestionar servicios.</body></html>");
+	    asirText = new JLabel("<html><body style='width: 118px;'>Los estudiantes de AdministraciÃ³n de Sistemas Informaticos en Red adquieren conocimientos en Areas como sistemas operativos, redes de computadoras, seguridad informatica y servicios de infraestructura.</body></html>");
 	    asirText.setVerticalAlignment(SwingConstants.TOP);
 	    asirText.setPreferredSize(new Dimension(147, 200));
 	    asirText.setBounds(450, 190, 147, 200);
@@ -80,12 +86,12 @@ public class AreasProyect extends JFrame {
 	    
 	    //menu
   		menu = new JMenuBar();
-        areasM = new JMenuItem("Áreas");
+        areasM = new JMenuItem("Areas");
         alumnosM = new JMenuItem("Alumnos");
         JMenu proyectoM = new JMenu("Proyecto Integrador");
 
         consulItem = new JMenuItem("Consultas");
-        addItem = new JMenuItem("Añadir Proyecto");
+        addItem = new JMenuItem("Anadir Proyecto");
         delItem = new JMenuItem("Borrar Proyecto");
         modItem = new JMenuItem("Modificar Proyecto");
           
@@ -103,10 +109,14 @@ public class AreasProyect extends JFrame {
         MenuListener menuList = new MenuListener(this);
         setListener(menuList);
 		
-		setSize(650, 470);
+		setSize(677, 485);
 		setLocationRelativeTo(null);
 	}
 	
+    /**
+     * Establece el listener para los elementos del menÃº.
+     * @param listener El objeto MenuListener que manejarÃ¡ los eventos del menÃº.
+     */
 	public void setListener(MenuListener listener) {
 		consulItem.addActionListener(listener);
 		addItem.addActionListener(listener);
@@ -117,9 +127,26 @@ public class AreasProyect extends JFrame {
 	}
 	
 	/**
-	 * Hace toda la página visible
+	 * Hace toda la pÃ¡gina visible
 	 */
 	public void hacerVisible() {
 		setVisible(true);
 	}
+	
+	/**
+     * MÃ©todo getter para el elemento consulItem (creado solo para testing).
+     * @return El elemento consulItem.
+     */
+    public Object getConsulItem() {
+        return null;
+    }
+
+    /**
+     * MÃ©todo getter para el elemento addItem (creado solo para testing).
+     * @return El elemento addItem.
+     */
+    public Object getAddItem() {
+        return null;
+    }
+
 }

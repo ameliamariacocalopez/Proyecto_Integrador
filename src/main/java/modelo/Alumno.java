@@ -1,6 +1,11 @@
 package modelo;
 
+/**
+ * Clase que representa un alumno
+ */
 public class Alumno {
+
+	AccesoBBDD programa = new AccesoBBDD();
 
 	private int numExpediente;
 	private int codigo;
@@ -8,14 +13,27 @@ public class Alumno {
 	private String apellidos;
 	private int idProyecto;
 	
-	public void datosAlumno (int numExpediente, int codigo, String nombre,String apellidos, int idProyecto) {
+	/**
+     * Constructor de la clase Alumno.
+     *
+     * @param numExpediente NÃºmero de expediente del alumno.
+     * @param codigo        CÃ³digo del alumno.
+     * @param nombre        Nombre del alumno.
+     * @param apellidos     Apellidos del alumno.
+     * @param idProyecto    ID del proyecto asociado al alumno.
+     */
+
+	public Alumno (int numExpediente, int codigo, String nombre,String apellidos, int idProyecto) {
 		this.numExpediente = numExpediente;
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.idProyecto = idProyecto;
 	}
-
+	
+	/**
+	 * GETTERS Y SETTERS
+	 */
 	public int getNumExpediente() {
 		return numExpediente;
 	}
@@ -56,7 +74,7 @@ public class Alumno {
 		this.idProyecto = idProyecto;
 	}
 	
-//	public String toString() {
-//		return "Nombre: "+ nombreProyecto + " - "+ idProyecto + " - " + areaCorrespondiente;
-//	}	
+	public String toString() {
+		return numExpediente + " - "+ nombre+" "+apellidos;
+	}	
 }

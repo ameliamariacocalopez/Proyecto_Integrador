@@ -8,20 +8,36 @@ public class ProyectoIntegrador {
 	private String nota;
 	private String fecha;
 	private String curso;
-	private String grupo;
-	private int areaCorrespondiente;
+	private String areaCorrespondiente;
 	
-	public ProyectoIntegrador (String idProyecto, String nombreProyecto, String urlProyecto, String note, String fecha, String curso, String grupo, int areaCorrespondiente ) {
+	/**
+	 * Constructor de la clase ProyectoIntegrador.
+	 *
+	 * @param idProyecto          ID del proyecto.
+	 * @param nombreProyecto      Nombre del proyecto.
+	 * @param urlProyecto         URL del proyecto.
+	 * @param nota                Nota del proyecto.
+	 * @param fecha               Fecha del proyecto.
+	 * @param curso               Curso asociado al proyecto.
+	 * @param areaCorrespondiente Ãrea correspondiente del proyecto.
+	 */
+	public ProyectoIntegrador (String idProyecto, String nombreProyecto, String urlProyecto, String note, String fecha, String curso,  String areaCorrespondiente ) {
 		this.idProyecto = idProyecto;
 		this.nombreProyecto = nombreProyecto;
 		this.urlProyecto = urlProyecto;
 		this.nota = note;
 		this.fecha = fecha;
 		this.curso = curso;
-		this.grupo = grupo;
 		this.areaCorrespondiente = areaCorrespondiente;
 	}
+	
+	public ProyectoIntegrador() {
+		
+	}
 
+	/**
+	 * GETTERS Y SETTERS
+	 */
 	public String getIdProyecto() {
 		return idProyecto;
 	}
@@ -70,24 +86,17 @@ public class ProyectoIntegrador {
 		this.curso = curso;
 	}
 
-	public String getGrupo() {
-		return grupo;
-	}
 
-	public void setGrupo(String grupo) {
-		this.grupo = grupo;
-	}
-
-	public int getAreaCorrespondiente() {
+	public String getAreaCorrespondiente() {
 		return areaCorrespondiente;
 	}
 
-	public void setAreaCorrespondiente(int areaCorrespondiente) {
+	public void setAreaCorrespondiente(String areaCorrespondiente) {
 		this.areaCorrespondiente = areaCorrespondiente;
 	}
 	
 	public String toString() {
-		return nombreProyecto + " - " + nota;
+		return idProyecto + "--" + nombreProyecto + " Nota:" + nota;
 	}
 	
 }
